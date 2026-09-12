@@ -1,0 +1,16 @@
+{
+  "name": "factory-study-archive",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 7100",
+    "preview": "vite preview --host --port 7100"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.10.0"
+  }
+}

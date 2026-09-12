@@ -456,7 +456,9 @@
     backend = { update, front, click };
   }
 
-  if (!initWebGL()) initCSS();
+  /* file:// 直连打开时 WebGL 纹理被浏览器 CORS 拦截（全黑），强制走 CSS 回退 */
+  if (location.protocol === 'file:') initCSS();
+  else if (!initWebGL()) initCSS();
 
   /* --- 跟随光标玻璃标签 --- */
   let lx = 0, ly = 0, lt = null, idleTimer = null;
@@ -496,6 +498,7 @@
     row.innerHTML = `
       <span class="work-row__idx">${pad2(i + 1)}</span>
       <span class="work-row__title">${esc(it.title)}</span>
+      ${it.img ? '' : '<span class="work-row__mark">纯文本 · 无图</span>'}
       <span class="work-row__cat">${it.cat.cn}</span>
       <span class="work-row__year">${esc(it.year || it.source || '')}</span>`;
     worksList.appendChild(row);

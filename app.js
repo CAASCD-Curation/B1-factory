@@ -10,6 +10,13 @@
   const pad2 = n => String(n).padStart(2, '0');
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* 图片路径统一入口：单文件版用 window.__IMG__ 内嵌图包，否则走 assets/img 文件夹 */
+  function imgSrc(name) {
+    if (!name) return '';
+    const pack = window.__IMG__;
+    return (pack && pack[name]) || ('assets/img/' + name);
+  }
+
   const CATS = [
     { key: 'form', cn: '形式灵感', en: 'Form & Inspiration' },
     { key: 'art',  cn: '艺术档案', en: 'Art Archive' },
@@ -52,7 +59,7 @@
   CATS.forEach(c => D[c.key].forEach(it => { if (it.img) bootPool.push(it); }));
   const bootCard = document.createElement('div');
   bootCard.className = 'boot-card';
-  bootCard.innerHTML = `<img src="assets/img/${(bootPool[0] || {}).img || ''}" alt="">`;
+  bootCard.innerHTML = `<img src="${imgSrc((bootPool[0] || {}).img)}" alt="">`;
   boot.appendChild(bootCard);
 
   /* 快速划过的图片流：速度从快到慢（起步 ~26ms/张，逐渐放缓） */
@@ -62,7 +69,7 @@
     const bootTickImg = () => {
       bootImgIdx = (bootImgIdx + 1) % bootPool.length;
       const im = new Image();
-      im.src = `assets/img/${bootPool[bootImgIdx].img}`;
+      im.src = imgSrc(bootPool[bootImgIdx].img);
       im.onload = () => {
         if (bootImg.isConnected) bootImg.src = im.src;
         (window.__bootTimes = window.__bootTimes || []).push(performance.now());
@@ -171,7 +178,7 @@
     $('#detailTitle').textContent = it.title;
     $('#detailDesc').textContent = bodyText(it);
     const img = $('#detailImg');
-    if (it.img) { img.src = `assets/img/${it.img}`; img.style.display = ''; }
+    if (it.img) { img.src = imgSrc(it.img); img.style.display = ''; }
     else img.style.display = 'none';
     detail.classList.toggle('detail--noimg', !it.img);
     const meta = [
@@ -316,7 +323,7 @@
 
     const loader = new THREE.TextureLoader();
     const meshes = heroItems.map((it, i) => {
-      const tex = loader.load('assets/img/' + it.img);
+      const tex = loader.load(imgSrc(it.img));
       tex.minFilter = THREE.LinearFilter;
       const m = new THREE.Mesh(
         new THREE.PlaneGeometry(.78, 1.04),
@@ -404,19 +411,21 @@
     return true;
   }
 
-  /* ---------- 后端 B：CSS 3D 回退 ---------- */
+  /* ---------- 后端 B：CSS 3D 旋转木马回退（与 WebGL 环一致的立体效果） ---------- */
   function initCSS() {
-    const R = Math.max(320, Math.min(620, window.innerWidth * .34));
-    const YSpx = [-480, -343, -206, -69, 69, 206, 343, 480];
+    const R = Math.max(620, Math.min(980, window.innerWidth * .52));
+    stage.style.perspective = '2400px'; /* 大透视 + 大半径，环的弧形才铺得开 */
+    const YSpx = [-430, -308, -185, -62, 62, 185, 308, 430];
     const PXR = 105; /* 世界单位 → px */
     const cur = heroItems.map((_, i) => {
       const s = REDUCED ? { x: 0, y: 0, z: 0 } : scatter(i);
-      return { x: s.x * PXR, y: s.y * PXR, z: s.z * PXR };
+      /* k：收拢进度（0=爆炸散落，1=归位成环）；spin/dy：初始自旋与纵向散落量 */
+      return { k: REDUCED ? 1 : 0, spin: s.x * 2.4, dy: s.y * 90, cos: 0 };
     });
     const cards = heroItems.map((it, i) => {
       const f = document.createElement('figure');
       f.className = 'hero__card';
-      f.innerHTML = `<img src="assets/img/${it.img}" alt="${esc(it.title)}" loading="eager" draggable="false">
+      f.innerHTML = `<img src="${imgSrc(it.img)}" alt="${esc(it.title)}" loading="eager" draggable="false">
         <figcaption>${pad2(i + 1)} / ${pad2(HERO_N)}</figcaption>`;
       stage.appendChild(f);
       return f;
@@ -424,24 +433,25 @@
     function update() {
       cards.forEach((c, i) => {
         const r = ringOf(i), j = idxInRing(i);
-        const a = (rot * SPEEDS[r] + j * (360 / PER)) * Math.PI / 180;
-        const tx = Math.sin(a) * R;
-        const ty = YSpx[r] + (bobOf(r, j) + voff * .9) * PXR;
-        const tz = Math.cos(a) * 160;
-        cur[i].x += (tx - cur[i].x) * .07;
-        cur[i].y += (ty - cur[i].y) * .07;
-        cur[i].z += (tz - cur[i].z) * .07;
-        const zn = cur[i].z / 160;
-        const scale = .55 + (zn + 1) / 2 * .5;
-        c.style.transform = `translate(-50%,-50%) translate3d(${cur[i].x}px,${cur[i].y}px,${cur[i].z}px) scale(${scale})`;
-        c.style.zIndex = Math.round(zn * 100) + 200;
-        c.style.opacity = .3 + (zn + 1) / 2 * .7;
+        const aDeg = rot * SPEEDS[r] + j * (360 / PER);
+        const st = cur[i];
+        st.k += (1 - st.k) * .05;
+        const ek = 1 - st.k;
+        const deg = aDeg + st.spin * ek;
+        const a = deg * Math.PI / 180;
+        const cos = Math.cos(a);
+        st.cos = cos;
+        const ty = YSpx[r] + (bobOf(r, j) + voff * .9) * PXR + st.dy * ek;
+        const scale = (.5 + (cos + 1) / 2 * .38) * (.45 + .55 * st.k);
+        c.style.transform = `translate(-50%,-50%) translate3d(0,${ty}px,0) rotateY(${deg}deg) translateZ(${R}px) scale(${scale})`;
+        c.style.zIndex = Math.round(cos * 100) + 200;
+        c.style.opacity = ((.3 + (cos + 1) / 2 * .7) * (.25 + .75 * st.k)).toFixed(3);
       });
     }
     function front() {
       let best = 0, bs = -1e9;
       cards.forEach((c, i) => {
-        if (cur[i].z > bs) { bs = cur[i].z; best = i; }
+        if (cur[i].cos > bs) { bs = cur[i].cos; best = i; }
       });
       return best;
     }
@@ -504,7 +514,7 @@
     worksList.appendChild(row);
     if (it.img) {
       row.addEventListener('pointerenter', () => {
-        previewImg.src = `assets/img/${it.img}`;
+        previewImg.src = imgSrc(it.img);
         /* 悬浮图按图片原始比例 */
         preview.style.aspectRatio = it.wh ? `${it.wh[0]} / ${it.wh[1]}` : '';
         preview.classList.add('is-on');
@@ -526,7 +536,7 @@
     const panel = document.createElement('div');
     panel.className = 'work-row__panel';
     panel.innerHTML = `
-      ${it.img ? `<figure class="work-row__panel-fig" ${it.wh ? `style="aspect-ratio:${it.wh[0]} / ${it.wh[1]}"` : ''}><img src="assets/img/${it.img}" alt="${esc(it.title)}"></figure>` : ''}
+      ${it.img ? `<figure class="work-row__panel-fig" ${it.wh ? `style="aspect-ratio:${it.wh[0]} / ${it.wh[1]}"` : ''}><img src="${imgSrc(it.img)}" alt="${esc(it.title)}"></figure>` : ''}
       <div class="work-row__panel-text">
         ${text && text !== it.title ? `<p>${esc(text)}</p>` : `<p class="work-row__panel-empty">暂无详细介绍，欢迎补充。</p>`}
         ${meta ? `<p class="work-row__panel-meta">${esc(meta)}</p>` : ''}
@@ -795,7 +805,7 @@
       entry.innerHTML = `
         ${hasImg ? `
         <figure class="entry__fig" data-cursor="view" ${it.wh ? `style="aspect-ratio:${it.wh[0]} / ${it.wh[1]}"` : ''}>
-          <img src="assets/img/${it.img}" alt="${esc(it.title)}" loading="lazy">
+          <img src="${imgSrc(it.img)}" alt="${esc(it.title)}" loading="lazy">
           <figcaption class="entry__figcap">${esc(it.source || '')} ${esc(it.year || '')} · 点击查看</figcaption>
         </figure>` : ''}
         <div class="entry__text">

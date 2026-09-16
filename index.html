@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FACTORY · 工厂策展档案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23101013'/%3E%3Crect x='3' y='6' width='3' height='7' fill='%23c7c7c0'/%3E%3Crect x='7' y='3' width='3' height='10' fill='%2382827b'/%3E%3Crect x='11' y='8' width='3' height='5' fill='%235f5f59'/%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="/B1-factory/assets/index-Dkf_VEvE.js"></script>
+  <link rel="stylesheet" crossorigin href="/B1-factory/assets/index-BfRKhKiw.css">
+</head>
+<body>
+
+  <!-- ============ 顶部导航 ============ -->
+  <nav id="topnav">
+    <button class="tn-brand" data-view="hero">FACTORY · 工厂策展档案</button>
+    <div class="tn-links">
+      <button data-view="overview">总 览</button>
+      <button data-view="bones">建筑骨骼</button>
+      <button data-view="parts">机器碎片</button>
+      <button data-view="blueprint">纸上工厂</button>
+      <button data-view="traces">人的痕迹</button>
+      <button data-view="world">地球版图</button>
+    </div>
+  </nav>
+
+  <!-- ============ 01 HERO ============ -->
+  <section id="hero" class="view active">
+    <div class="noise"></div>
+    <div class="hero-meta">
+      <span class="m-left">工厂策展档案 · FACTORY ARCHIVE</span>
+      <span class="m-right">202 条资料 / 四种看法</span>
+    </div>
+    <h1 id="factory-title" aria-label="FACTORY ARCHIVE"></h1>
+    <div class="hero-tagline">
+      <span>四 种 形 态</span><i>/</i><span>一 座 工 厂</span>
+    </div>
+    <p class="hero-sub">悬停字母，看零件拼出工厂 —— 点击空白处，进入资料总览</p>
+    <div class="view-hint">点击空白 · 进入总览</div>
+  </section>
+
+  <!-- ============ 02 OVERVIEW 3D 总览 ============ -->
+  <section id="overview" class="view">
+    <div class="noise"></div>
+    <div class="ov-top">
+      <div class="ov-mode" id="ov-mode">
+        <button class="mode-btn active" data-mode="grid">网 格</button>
+        <button class="mode-btn" data-mode="spiral">螺 旋</button>
+        <span class="mode-slider"></span>
+      </div>
+    </div>
+    <div class="ov-meta">FACTORY ARCHIVE — 202 条资料总览</div>
+    <canvas id="stage"></canvas>
+    <div class="ov-bottom">
+      <span class="ov-hint">点击卡片查看详情 · 滚轮缩放 · ESC 关闭 · 点击空白进入建筑骨骼</span>
+    </div>
+  </section>
+
+  <!-- ============ 03 BONES 建筑骨骼 ============ -->
+  <section id="bones" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>建筑骨骼 · 空间拆解</h2>
+      <p>BONE STRUCTURE — 悬停查看每一层的具体影像 · 点击调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <canvas id="bones-canvas"></canvas>
+    <aside id="bones-list"></aside>
+    <div id="bones-tip"></div>
+    <div id="bones-gfa">总建筑面积 GFA 28,600 ㎡ · 地上 5 层 · 地下 1 层 · 轴线尺寸 95.0 m × 70.0 m</div>
+    <div class="view-hint">悬停查看 · 点击作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ 04 PARTS 机器碎片 ============ -->
+  <section id="parts" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>机器碎片 · 流水线</h2>
+      <p>MACHINE PARTS — 零件沿传送带从远处运来：点击零件，调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <canvas id="parts-belt"></canvas>
+    <div class="view-hint">点击零件查看作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ 05 BLUEPRINT 纸上工厂 ============ -->
+  <section id="blueprint" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>纸上工厂 · 平面图纸</h2>
+      <p>BLUEPRINT — 点击图纸上的标注，调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <div class="bp-sheet" id="bp-sheet"></div>
+    <div id="bp-tip"></div>
+    <div class="view-hint">点击标注查看作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ 06 TRACES 人的痕迹 ============ -->
+  <section id="traces" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>人的痕迹 · 遗物陈列</h2>
+      <p>HUMAN TRACES — 点击一件物品，调出与它相关的作品 · 点击空白返回总览</p>
+    </div>
+    <div class="traces-field" id="traces-field"></div>
+    <div class="view-hint">拖拽物品可移动 · 点击查看相关作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ 07 WORLD 地球版图 ============ -->
+  <section id="world" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>地球版图 · 工厂事件地图</h2>
+      <p>WORLD MAP — 悬停国家查看相关作品 · 点击查看全部 · 颜色越深档案越多 · 点击空白返回总览</p>
+    </div>
+    <div class="world-stage" id="world-map"></div>
+    <div id="world-tip"></div>
+    <div id="world-plan"></div>
+    <div class="view-hint">悬停国家出现行政规划图 · 点击版图固定 · 悬停规划图查看相关作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ DETAIL PANEL（单件作品） ============ -->
+  <aside id="panel">
+    <button class="panel-close" id="panel-close">×</button>
+    <div class="panel-media" id="panel-media"></div>
+    <div class="panel-body">
+      <div class="panel-tags" id="panel-tags"></div>
+      <h2 id="panel-title"></h2>
+      <div class="panel-subquote" id="panel-subquote"></div>
+      <p id="panel-content"></p>
+      <div class="panel-note" id="panel-note"></div>
+    </div>
+  </aside>
+  <div id="panel-mask"></div>
+
+  <!-- ============ WORKS POP（一组相关作品） ============ -->
+  <div id="works-pop">
+    <div class="wp-box">
+      <button class="wp-close" id="wp-close">×</button>
+      <div class="wp-head">
+        <span class="wp-num" id="wp-num"></span>
+        <div>
+          <h3 id="wp-title"></h3>
+          <div class="wp-sub" id="wp-sub"></div>
+        </div>
+      </div>
+      <p class="wp-desc" id="wp-desc"></p>
+      <div id="wp-hero"></div>
+      <div class="wp-grid" id="wp-grid"></div>
+    </div>
+  </div>
+
+</body>
+</html>

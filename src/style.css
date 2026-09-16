@@ -74,7 +74,8 @@ button { font-family: var(--font); cursor: pointer; }
   background-size: contain; background-position: center; background-repeat: no-repeat;
   opacity: 0; transform: scale(1.28) rotate(2deg);
   clip-path: inset(46% 46% 46% 46%);
-  filter: drop-shadow(0 12px 28px rgba(0,0,0,.55));
+  /* 零件图为透明底，加零件投影 */
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,.5));
   border-radius: 2px;
 }
 .glyph.on .g-text { opacity: 0; transform: scale(.82); }
@@ -438,6 +439,10 @@ body { overflow: hidden; height: 100vh; }
   background: var(--bg);
 }
 .view.active { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 2; }
+/* 未激活视图里的子元素可能自带 pointer-events:auto（如骨骼列表），
+   会盖住首页字母的悬停交互，这里统一强制禁用 */
+.view:not(.active),
+.view:not(.active) * { pointer-events: none !important; }
 #hero { height: 100%; min-height: 0; }
 #overview { height: 100%; }
 

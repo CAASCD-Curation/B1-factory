@@ -1,121 +1,153 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F96 — 工厂研究档案 | Factory Study Archive</title>
-<meta name="description" content="F96 — 工厂研究档案：形式灵感、艺术档案、文学意象、社会素材。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230E0D0B'/%3E%3Ctext x='16' y='23' font-family='Arial Black' font-size='18' fill='%23F2EFE9' text-anchor='middle'%3EF%3C/text%3E%3Ccircle cx='25' cy='8' r='4' fill='%23E8490F'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300..700&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FACTORY · 工厂策展档案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23101013'/%3E%3Crect x='3' y='6' width='3' height='7' fill='%23c7c7c0'/%3E%3Crect x='7' y='3' width='3' height='10' fill='%2382827b'/%3E%3Crect x='11' y='8' width='3' height='5' fill='%235f5f59'/%3E%3C/svg%3E" />
 </head>
 <body>
 
-<!-- ===== Preloader ===== -->
-<div class="boot-loader" aria-hidden="true">
-  <div class="boot-loader__stack" id="bootStack"></div>
-  <div class="boot-loader__counter" id="bootCounter">[0]</div>
-  <div class="boot-loader__patch"></div>
-</div>
-
-<!-- ===== Custom cursor ===== -->
-<div class="cursor" id="cursor" aria-hidden="true">
-  <div class="cursor__dot"></div>
-  <div class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></div>
-</div>
-
-<!-- ===== Transition layer ===== -->
-<div class="transition-layer" id="transitionLayer" aria-hidden="true"></div>
-
-<!-- ===== 详情页：左图右文 ===== -->
-<div class="detail" id="detail" aria-hidden="true">
-  <button class="detail__close" id="detailClose" type="button">关闭 ×</button>
-  <div class="detail__inner">
-    <figure class="detail__figure"><img id="detailImg" alt=""></figure>
-    <div class="detail__body">
-      <h2 class="detail__title" id="detailTitle"></h2>
-      <p class="detail__desc" id="detailDesc"></p>
-      <div class="detail__meta" id="detailMeta"></div>
+  <!-- ============ 顶部导航 ============ -->
+  <nav id="topnav">
+    <button class="tn-brand" data-view="hero">FACTORY · 工厂策展档案</button>
+    <div class="tn-links">
+      <button data-view="overview">总 览</button>
+      <button data-view="bones">建筑骨骼</button>
+      <button data-view="parts">机器碎片</button>
+      <button data-view="blueprint">纸上工厂</button>
+      <button data-view="traces">人的痕迹</button>
+      <button data-view="world">地球版图</button>
     </div>
-  </div>
-</div>
+  </nav>
 
-<!-- ===== Nav ===== -->
-<nav class="nav">
-  <ul class="nav__links">
-    <li><a href="#works" class="nav__link" data-nav data-roll><span class="nav__link-dot"></span><span class="nav__link-text">全部作品</span></a></li>
-    <li><a href="#archive" class="nav__link" data-nav data-roll><span class="nav__link-dot"></span><span class="nav__link-text">档案</span></a></li>
-    <li class="nav__lang"><span>中</span><i>/</i><span class="is-off">EN</span></li>
-  </ul>
-  <button class="nav__burger" id="burger" aria-label="菜单"><span></span><span></span></button>
-</nav>
-
-<!-- ===== Menu overlay ===== -->
-<div class="menu" id="menu" aria-hidden="true">
-  <div class="menu__inner">
-    <p class="menu__eyebrow">M E N U</p>
-    <a href="#works" class="menu__link" data-nav data-roll-menu>全部作品</a>
-    <a href="#archive" class="menu__link" data-nav data-roll-menu>档案</a>
-    <p class="menu__foot">工厂研究档案 — FACTORY STUDY ARCHIVE © 2026</p>
-  </div>
-</div>
-
-<main id="top">
-
-  <!-- ===== Hero：多个上下平行的 3D 圆环 ===== -->
-  <section class="hero" id="hero">
-    <div class="hero__stage" id="heroStage" data-cursor="drag"></div>
-    <div class="hero__type">
-      <h1 class="hero__title" aria-label="FACTORY 工厂">
-        <span class="hero__title-line" data-hero-line>FACTORY</span>
-        <span class="hero__title-cn" data-hero-line>工厂</span>
-      </h1>
-      <p class="hero__sub">品牌与数字设计工作室<span> / BRAND &amp; DIGITAL DESIGN STUDIO</span></p>
+  <!-- ============ 01 HERO ============ -->
+  <section id="hero" class="view active">
+    <div class="noise"></div>
+    <div class="hero-meta">
+      <span class="m-left">工厂策展档案 · FACTORY ARCHIVE</span>
+      <span class="m-right">202 条资料 / 四种看法</span>
     </div>
-    <div class="project-label" id="projectLabel" aria-hidden="true">
-      <div class="project-label__pill"><span class="project-label__cue">SCROLL</span></div>
-      <div class="project-label__text">
-        <span class="project-label__title" id="labelTitle"></span>
-        <span class="project-label__index" id="labelIndex"></span>
+    <h1 id="factory-title" aria-label="FACTORY ARCHIVE"></h1>
+    <div class="hero-tagline">
+      <span>四 种 形 态</span><i>/</i><span>一 座 工 厂</span>
+    </div>
+    <p class="hero-sub">悬停字母，看零件拼出工厂 —— 点击空白处，进入资料总览</p>
+    <div class="view-hint">点击空白 · 进入总览</div>
+  </section>
+
+  <!-- ============ 02 OVERVIEW 3D 总览 ============ -->
+  <section id="overview" class="view">
+    <div class="noise"></div>
+    <div class="ov-top">
+      <div class="ov-mode" id="ov-mode">
+        <button class="mode-btn active" data-mode="grid">网 格</button>
+        <button class="mode-btn" data-mode="spiral">螺 旋</button>
+        <span class="mode-slider"></span>
       </div>
     </div>
+    <div class="ov-meta">FACTORY ARCHIVE — 202 条资料总览</div>
+    <canvas id="stage"></canvas>
+    <div class="ov-bottom">
+      <span class="ov-hint">点击卡片查看详情 · 滚轮缩放 · ESC 关闭 · 点击空白进入建筑骨骼</span>
+    </div>
   </section>
 
-  <!-- ===== Archive：图文叠层档案（第二部分） ===== -->
-  <section class="archive" id="archive">
-    <header class="section-head">
-      <p class="section-head__eyebrow">A R C H I V E</p>
-      <h2 class="section-head__title">研究档案 <sup id="archiveCount"></sup></h2>
-    </header>
-    <div id="archiveRoot"></div>
+  <!-- ============ 03 BONES 建筑骨骼 ============ -->
+  <section id="bones" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>建筑骨骼 · 空间拆解</h2>
+      <p>BONE STRUCTURE — 悬停查看每一层的具体影像 · 点击调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <canvas id="bones-canvas"></canvas>
+    <aside id="bones-list"></aside>
+    <div id="bones-tip"></div>
+    <div id="bones-gfa">总建筑面积 GFA 28,600 ㎡ · 地上 5 层 · 地下 1 层 · 轴线尺寸 95.0 m × 70.0 m</div>
+    <div class="view-hint">悬停查看 · 点击作品 · 点击空白返回</div>
   </section>
 
-  <!-- ===== Works index（第三部分） ===== -->
-  <section class="works" id="works">
-    <header class="section-head">
-      <p class="section-head__eyebrow">S E L E C T E D</p>
-      <h2 class="section-head__title">全部作品 <sup id="worksCount"></sup></h2>
-      <div class="works__filters" id="worksFilters"></div>
-    </header>
-    <div class="works__list" id="worksList"></div>
-    <div class="works__preview" id="worksPreview" aria-hidden="true"><img id="worksPreviewImg" alt=""></div>
+  <!-- ============ 04 PARTS 机器碎片 ============ -->
+  <section id="parts" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>机器碎片 · 流水线</h2>
+      <p>MACHINE PARTS — 零件沿传送带从远处运来：点击零件，调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <canvas id="parts-belt"></canvas>
+    <div class="view-hint">点击零件查看作品 · 点击空白返回</div>
   </section>
 
-</main>
+  <!-- ============ 05 BLUEPRINT 纸上工厂 ============ -->
+  <section id="blueprint" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>纸上工厂 · 平面图纸</h2>
+      <p>BLUEPRINT — 点击图纸上的标注，调出相关作品 · 点击空白返回总览</p>
+    </div>
+    <div class="bp-sheet" id="bp-sheet"></div>
+    <div id="bp-tip"></div>
+    <div class="view-hint">点击标注查看作品 · 点击空白返回</div>
+  </section>
 
-<!-- ===== 极简页脚 ===== -->
-<footer class="footer">
-  <div class="footer__bar">
-    <span>工厂研究档案 — FACTORY STUDY ARCHIVE</span>
-    <span id="footerCounter">0 / 0 selected entries</span>
-    <span>© 2026</span>
+  <!-- ============ 06 TRACES 人的痕迹 ============ -->
+  <section id="traces" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>人的痕迹 · 遗物陈列</h2>
+      <p>HUMAN TRACES — 点击一件物品，调出与它相关的作品 · 点击空白返回总览</p>
+    </div>
+    <div class="traces-field" id="traces-field"></div>
+    <div class="view-hint">拖拽物品可移动 · 点击查看相关作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ 07 WORLD 地球版图 ============ -->
+  <section id="world" class="view">
+    <div class="noise"></div>
+    <div class="view-head">
+      <h2>地球版图 · 工厂事件地图</h2>
+      <p>WORLD MAP — 悬停国家查看相关作品 · 点击查看全部 · 颜色越深档案越多 · 点击空白返回总览</p>
+    </div>
+    <div class="world-stage" id="world-map"></div>
+    <div id="world-tip"></div>
+    <div id="world-plan"></div>
+    <div class="view-hint">悬停国家出现行政规划图 · 点击版图固定 · 悬停规划图查看相关作品 · 点击空白返回</div>
+  </section>
+
+  <!-- ============ DETAIL PANEL（单件作品） ============ -->
+  <aside id="panel">
+    <button class="panel-close" id="panel-close">×</button>
+    <div class="panel-media" id="panel-media"></div>
+    <div class="panel-body">
+      <div class="panel-tags" id="panel-tags"></div>
+      <h2 id="panel-title"></h2>
+      <div class="panel-subquote" id="panel-subquote"></div>
+      <p id="panel-content"></p>
+      <div class="panel-note" id="panel-note"></div>
+    </div>
+  </aside>
+  <div id="panel-mask"></div>
+
+  <!-- ============ WORKS POP（一组相关作品） ============ -->
+  <div id="works-pop">
+    <div class="wp-box">
+      <button class="wp-close" id="wp-close">×</button>
+      <div class="wp-head">
+        <span class="wp-num" id="wp-num"></span>
+        <div>
+          <h3 id="wp-title"></h3>
+          <div class="wp-sub" id="wp-sub"></div>
+        </div>
+      </div>
+      <p class="wp-desc" id="wp-desc"></p>
+      <div id="wp-hero"></div>
+      <div class="wp-grid" id="wp-grid"></div>
+    </div>
   </div>
-</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.147.0/three.min.js"></script>
-<script src="data.js"></script>
-<script src="app.js"></script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

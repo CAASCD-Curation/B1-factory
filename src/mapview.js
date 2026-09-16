@@ -2,6 +2,7 @@
 // 鼠标悬停某国 → 显示该国相关作品预览；点击 → 调出全部相关作品
 // 相关作品越多，国家颜色越深
 import { MAP_COUNTRIES } from './map-data.js';
+import { B } from './base.js';
 
 /* ---------- 国家 → 关键词（城市名优先于国名） ---------- */
 const COUNTRY_KWS = [
@@ -122,7 +123,7 @@ export function initWorld(items, pop, panel) {
     const titles = rec ? rec.items.slice(0, 8) : [];
     return `
       <div class="wp-head2"><b>${name}</b><span>行政规划 · ${n} 条相关档案</span></div>
-      ${imgKey ? `<img class="wp-img" src="/images/plans/${imgKey}.png" alt="${name}行政规划图" />` : ''}
+      ${imgKey ? `<img class="wp-img" src="${B}images/plans/${imgKey}.png" alt="${name}行政规划图" />` : ''}
       <div class="wp-works">
         ${reps.length ? `<div class="wpw-reps">${reps.map(it => `<img src="${it.img}" data-wid="${it.id}" alt="" title="《${it.title}》" />`).join('')}</div>` : ''}
         <div class="wpw-list">${titles.map(it => `<p data-wid="${it.id}">《${it.title}》</p>`).join('')}</div>

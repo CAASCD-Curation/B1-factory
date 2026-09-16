@@ -1,5 +1,7 @@
 // FACTORY 字母：悬停切换为零件图案 + 弹性膨胀 + 邻字母位移
 // 模仿 boknows/text-image 的悬停动效：放大缩小带回弹，相邻字母被挤开
+import { B } from './base.js';
+
 export function initLetters() {
   const title = document.getElementById('factory-title');
   const letters = 'FACTORY ARCHIVE'.split('');
@@ -20,13 +22,13 @@ export function initLetters() {
     }
     // 预载
     const img = new Image();
-    img.src = `/letters/${L}.png`;
+    img.src = `${B}letters/${L}.png`;
 
     const glyph = document.createElement('span');
     glyph.className = 'glyph';
     glyph.innerHTML =
       `<span class="g-text">${L}</span>` +
-      `<span class="g-img" style="background-image:url('/letters/${L}.png')"></span>`;
+      `<span class="g-img" style="background-image:url('${B}letters/${L}.png')"></span>`;
     title.appendChild(glyph);
     glyphs.push(glyph);
 

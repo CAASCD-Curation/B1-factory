@@ -1,6 +1,7 @@
 // 建筑骨骼 · 空间拆解 —— Three.js 三维爆炸模型
 // 六层工厂结构悬浮拆解：悬停展示该层具体图，点击调出相关作品
 import * as THREE from 'three';
+import { B } from './base.js';
 
 const SECTIONS = [
   {
@@ -750,7 +751,7 @@ export function initBones(items, pop) {
       b.classList.toggle('hot', +b.dataset.i === i));
     document.body.style.cursor = i >= 0 ? 'pointer' : 'default';
     if (i >= 0 && reps[i]) {
-      tip.innerHTML = `<img src="/images/bones/axo-${i + 1}.png" onerror="this.onerror=null;this.src='${reps[i]}'" alt="" /><div class="bt-text"><b>${SECTIONS[i].num} ${SECTIONS[i].name}</b><span>悬停查看 · 点击调出 ${matched[i].length} 条相关作品</span></div>`;
+      tip.innerHTML = `<img src="${B}images/bones/axo-${i + 1}.png" onerror="this.onerror=null;this.src='${reps[i]}'" alt="" /><div class="bt-text"><b>${SECTIONS[i].num} ${SECTIONS[i].name}</b><span>悬停查看 · 点击调出 ${matched[i].length} 条相关作品</span></div>`;
       tip.classList.add('show');
     } else {
       tip.classList.remove('show');
@@ -773,7 +774,7 @@ export function initBones(items, pop) {
       num: sec.num, title: sec.name,
       sub: `${sec.en} · ${matched[i].length} 条相关档案`,
       desc: sec.desc, items: matched[i],
-      hero: `/images/bones/axo-${i + 1}.png`,
+      hero: `${B}images/bones/axo-${i + 1}.png`,
       heroFallback: reps[i],
     });
   }

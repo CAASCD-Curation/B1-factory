@@ -2,6 +2,8 @@
 // 双线图墙 + 柱网 + 红色尺寸链 + 轴线圈 + 门窗开启线 + 设备布置 + 物流箭头
 // 点击标注，调出相关作品
 
+import { B } from './base.js';
+
 const ZONES = [
   { num: 'A1', key: 'gate', name: '大门 · 门房', en: 'GATEHOUSE', cx: 210, cy: 610,
     desc: '每天进出厂房的关卡——打卡、点名、搜身，工厂权力的第一道闸门。',
@@ -288,7 +290,7 @@ export function initBlueprint(items, pop) {
     g.addEventListener('mouseenter', () => {
       const tip = document.getElementById('bp-tip');
       if (!tip) return;
-      tip.innerHTML = `<img src="/images/zones/bp-${z.key}.png" onerror="this.closest('#bp-tip').classList.remove('show')" alt="" />
+      tip.innerHTML = `<img src="${B}images/zones/bp-${z.key}.png" onerror="this.closest('#bp-tip').classList.remove('show')" alt="" />
         <div class="bt-text"><b>${z.num} ${z.name}</b><span>${z.en} · 悬停查看 · 点击调出 ${matched[i].length} 条相关作品</span></div>`;
       tip.classList.add('show');
     });

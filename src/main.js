@@ -7,6 +7,7 @@ import { initParts } from './parts.js';
 import { initBlueprint } from './blueprint.js';
 import { initTraces } from './traces.js';
 import { initWorld } from './mapview.js';
+import { B } from './base.js';
 import './style.css';
 
 const VIEW_ORDER = ['hero', 'overview', 'bones', 'parts', 'blueprint', 'traces', 'world'];
@@ -59,8 +60,10 @@ function bindBlankNav() {
 async function boot() {
   initLetters();
 
-  const res = await fetch('/data/items.json');
+  const res = await fetch(B + 'data/items.json');
   const items = await res.json();
+  // 线上（GitHub Pages 子路径）把数据里的根绝对资源路径加上 base 前缀
+  items.forEach(it => { if (it.img && it.img.startsWith('/')) it.img = B + it.img.slice(1); });
   window.__items = items; // 调试验证用
 
   const panel = initPanel();

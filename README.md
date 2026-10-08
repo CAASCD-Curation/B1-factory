@@ -1,44 +1,30 @@
-# B1-factory · 工厂策展档案
+# 7/∞ 工厂 · 七分厂（B1 Factory）
 
-「FACTORY · 工厂策展档案」互动网站 —— 基于工厂主题作品资料的沉浸式策展站点。
+《工厂》七天展览网页：周一打卡 → 周二培训 → 周三实操 → 周四提速 → 周五发薪 → 周六罢工 → 周日狂欢。
 
-线上地址：https://caascd-curation.github.io/B1-factory/
+## 访问
 
-## 板块导航
-
-- **总览**：三维工厂卡片云，滚轮缩放、中键旋转，点击进入作品详情
-- **建筑骨骼**：厂房空间爆炸拆解三维模型（六层），点击结构查看轴测图与相关作品
-- **机器碎片**：流水线传送带上的机械零件模型，点击查看相关作品
-- **纸上工厂**：专业车间平面图纸，点击标注区域查看相关作品
-- **人的痕迹**：遗物陈列，悬停物品切换 3D 旋转视频动画
-- **地球版图**：工厂事件世界地图，悬停国家显示行政规划图与相关作品
-
-## 技术栈
-
-Vite + Three.js + 原生 ES Modules，无前端框架。
+- Cloudflare Pages：<https://b1-factory.pages.dev>（主部署）
+- GitHub Pages：<https://caascd-curation.github.io/B1-factory/>（备用）
 
 ## 本地运行
 
+纯静态站点，任意静态服务器指向本目录即可。例如：
+
 ```bash
-npm install
-npm run dev        # 开发服务器 http://localhost:7100
-npm run build      # 生产构建输出到 dist/
-npm run preview    # 预览构建产物
+npx serve .
+# 或
+python -m http.server 8080
 ```
+
+注意：本站是单页应用（React Router），直接刷新 /friday 等子路由需要 SPA 回退。
+`_redirects`（Cloudflare Pages）与 `404.html`（GitHub Pages）已配置回退，本地测试请用支持回退的服务器。
 
 ## 目录结构
 
-```
-src/          页面源码（main / scene / bones / parts / blueprint / traces / mapview / panel）
-public/       静态资源（images 作品图、videos/objects 物品旋转视频、data 等）
-scripts/      无头浏览器验证脚本（开发用）
-```
+- `index.html` + `assets/` — 构建产物（React + Vite）
+- `images/` — 页面配图
+- `archive/` — 展览档案图片（193 张）
+- `打开说明.txt` — 完整说明文档
 
-## 发布
-
-构建产物发布在 `gh-pages` 分支（GitHub Pages 源）：
-
-```bash
-npm run build
-# 将 dist/ 内容推送到 gh-pages 分支
-```
+源码工程（React + TypeScript + Vite）另行打包分发，见仓库发布或联系策展组。
